@@ -1,8 +1,8 @@
-package com.example.demo.business.entities
+package com.example.demo.ui
 
 import groovy.transform.Canonical
 
 @Canonical
-class Account {
+class CreateAccountRequest {
     String documentNumber
 }
