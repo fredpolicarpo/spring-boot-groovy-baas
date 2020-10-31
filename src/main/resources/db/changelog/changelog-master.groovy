@@ -1,7 +1,7 @@
 package db.changelog
 
 databaseChangeLog {
-    changeSet(id: 'create-account-table', author: 'fred') {
+    changeSet(id: 'create-account-table', author: 'Fred Policarpo') {
         createTable(tableName: 'accounts', schemaName: 'public') {
             column(name: 'id', type: 'int', autoIncrement: 'true') {
                 constraints(nullable: false, primaryKey: true)
@@ -10,7 +10,11 @@ databaseChangeLog {
             column(name: 'document_number', type: 'varchar(50)') {
                 constraints(nullable: false, unique: true)
             }
-            column(name: 'create_at', type: 'timestamp') {
+
+            column(name: "version", type: "int") {
+                constraints(nullable: "false")
+            }
+            column(name: 'created_at', type: 'timestamp') {
                 constraints(nullable: false)
             }
             column(name: 'updated_at', type: 'timestamp')

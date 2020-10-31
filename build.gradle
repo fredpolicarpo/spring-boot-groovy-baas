@@ -6,7 +6,7 @@ plugins {
     id 'groovy'
 }
 
-mainClassName = 'com.example.demo.DemoApplication'
+mainClassName = 'com.example.demo.application.spring.Application'
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
