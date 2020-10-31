@@ -2,10 +2,14 @@ package com.fredpolicarpo.baas.application.spring.web
 
 
 import com.fredpolicarpo.baas.business.Interactor
+import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
 import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
 import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
+import com.fredpolicarpo.baas.ui.GetAccountResponse
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -38,6 +42,20 @@ class AccountController {
         } catch (final Exception ex) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
             return new CreateAccountResponse(error: ex.message)
+        }
+    }
+
+    @GetMapping("/{accountId}")
+    GetAccountResponse createAccount(@PathVariable Long accountId, HttpServletResponse response) {
+        try {
+            final GetAccountResponse getAccountResponse = interactor.getAccount(accountId)
+            return getAccountResponse
+        } catch (final AccountNotFoundException accountNotFoundEx) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND)
+            return new GetAccountResponse(error: accountNotFoundEx.message)
+        } catch (final Exception ex) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+            return new GetAccountResponse(error: ex.message)
         }
     }
 }

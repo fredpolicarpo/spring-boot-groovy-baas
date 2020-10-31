@@ -4,5 +4,6 @@ import groovy.transform.Canonical
 
 @Canonical
 class Account {
+    Long id
     String documentNumber
 }

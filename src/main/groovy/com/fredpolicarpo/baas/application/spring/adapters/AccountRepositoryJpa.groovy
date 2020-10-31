@@ -26,11 +26,18 @@ class AccountRepositoryJpa implements AccountRepository {
     Account save(Account account) {
         final AccountJpa saved =  accountRepositoryJpa.save(new AccountJpa(documentNumber: account.documentNumber))
 
-        return new Account(saved.documentNumber)
+        return new Account(documentNumber:  saved.documentNumber, id: saved.id)
     }
 
     @Override
     boolean existsAccountWithDocumentNumber(String documentNumber) {
         return accountRepositoryJpa.existsByDocumentNumber(documentNumber)
+    }
+
+    @Override
+    Optional<Account> findById(Long id) {
+        final Optional<AccountJpa> saved =  accountRepositoryJpa.findById(id)
+
+        return saved.map({a -> new Account(documentNumber:  a.documentNumber, id: a.id)})
     }
 }

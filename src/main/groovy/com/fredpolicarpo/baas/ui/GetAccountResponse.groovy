@@ -6,15 +6,12 @@ import groovy.transform.Canonical
 
 @Canonical
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class CreateAccountResponse {
+class GetAccountResponse {
     @JsonProperty("document_number")
     String documentNumber
 
     @JsonProperty("account_id")
     String accountId
-
-    @JsonProperty("created_at")
-    String createdAt
 
     String error
 }

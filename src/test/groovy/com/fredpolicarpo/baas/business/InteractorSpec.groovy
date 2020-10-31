@@ -1,5 +1,6 @@
 package com.fredpolicarpo.baas.business
 
+import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
 import com.fredpolicarpo.baas.mocks.AccountRepositoryMock
 import com.fredpolicarpo.baas.mocks.TimerMock
 import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
@@ -9,6 +10,7 @@ import com.fredpolicarpo.baas.business.ports.Timer
 import com.fredpolicarpo.baas.business.entities.Account
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
+import com.fredpolicarpo.baas.ui.GetAccountResponse
 import spock.lang.Specification
 
 import java.time.Instant
@@ -26,6 +28,10 @@ class InteractorSpec extends Specification {
         interactor = new Interactor(mockAccountRepository, mockTimer)
     }
 
+    def cleanup() {
+        ((AccountRepositoryMock) mockAccountRepository).clean()
+    }
+
     def "Should create a new Account"() {
         given:
         final String documentNumber = "11122233344456"
@@ -35,11 +41,13 @@ class InteractorSpec extends Specification {
         final CreateAccountResponse response = interactor.createAccount(createAccountRequest)
         response.documentNumber == documentNumber
         response.createdAt == currentInstantStr
+        response.accountId == String.valueOf(1L)
 
         and: "The account was persisted on the database"
         final Optional<Account> savedAccount = mockAccountRepository.findByDocumentNumber(documentNumber)
         savedAccount.isPresent()
         savedAccount.get().documentNumber == documentNumber
+        savedAccount.get().id != null
     }
 
     def "Should not allow create account with duplicated document number"() {
@@ -72,6 +80,33 @@ class InteractorSpec extends Specification {
         null           | "Invalid document number: null"
         ""             | "Invalid document number: ''"
         "            " | "Invalid document number: '            '"
+    }
+
+    def "Should retrieve details of an Account"() {
+        given: "A persisted account"
+        final String documentNumber = "11122233344456"
+        final Account persistedAccount = mockAccountRepository.save(new Account(documentNumber: documentNumber))
+
+        expect: "Persisted account has an id"
+        persistedAccount.id != null
+
+        and: "The persisted account should be recovered"
+        final GetAccountResponse response = interactor.getAccount(persistedAccount.id)
+        String.valueOf(persistedAccount.id) == response.accountId
+        persistedAccount.documentNumber == response.documentNumber
+    }
+
+    def "Should throw when try get details of an not existent Account"() {
+        given:
+        final Long id = 1
+
+        when: "Try to get an account from an empty repository"
+        interactor.getAccount(1)
+
+        then:
+        final AccountNotFoundException ex = thrown(AccountNotFoundException)
+        ex.id == id
+        ex.message == "Any Account found with id = ${id}"
     }
 
 }
