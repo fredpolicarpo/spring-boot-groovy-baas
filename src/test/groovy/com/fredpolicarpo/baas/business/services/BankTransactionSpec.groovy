@@ -1,10 +1,9 @@
-package com.fredpolicarpo.baas
+package com.fredpolicarpo.baas.business.services
 
-
+import com.fredpolicarpo.baas.mocks.TimerMock
 import com.fredpolicarpo.baas.business.entities.OperationType
 import com.fredpolicarpo.baas.business.entities.Account
 import com.fredpolicarpo.baas.business.ports.Timer
-import com.fredpolicarpo.baas.business.services.BankTransaction
 import spock.lang.Specification
 
 import java.time.Instant

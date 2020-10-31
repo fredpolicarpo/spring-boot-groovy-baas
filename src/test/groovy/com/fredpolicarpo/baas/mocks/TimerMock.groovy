@@ -1,4 +1,4 @@
-package com.fredpolicarpo.baas
+package com.fredpolicarpo.baas.mocks
 
 import com.fredpolicarpo.baas.business.ports.Timer
 import groovy.transform.Canonical

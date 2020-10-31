@@ -1,4 +1,4 @@
-package com.fredpolicarpo.baas.application.spring.controller
+package com.fredpolicarpo.baas.application.spring.web
 
 
 import com.fredpolicarpo.baas.business.Interactor

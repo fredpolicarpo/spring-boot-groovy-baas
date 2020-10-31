@@ -3,6 +3,8 @@ package com.fredpolicarpo.baas.business
 import com.fredpolicarpo.baas.business.entities.Account
 import com.fredpolicarpo.baas.business.ports.AccountRepository
 import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
+import com.fredpolicarpo.baas.ui.CreateAccountRequest
+import com.fredpolicarpo.baas.ui.CreateAccountResponse
 
 import static com.fredpolicarpo.baas.ui.CreateAccountRequestValidator.validate
 
@@ -15,7 +17,7 @@ class Interactor {
     final AccountRepository accountRepository
     final Timer timer
 
-    com.fredpolicarpo.baas.ui.CreateAccountResponse createAccount(com.fredpolicarpo.baas.ui.CreateAccountRequest createAccountRequest) {
+    CreateAccountResponse createAccount(CreateAccountRequest createAccountRequest) {
         validate(createAccountRequest)
 
         if(accountRepository.existsAccountWithDocumentNumber(createAccountRequest.documentNumber)) {
@@ -26,6 +28,6 @@ class Interactor {
 
         final Account savedAccount = accountRepository.save(account)
 
-        return new com.fredpolicarpo.baas.ui.CreateAccountResponse(savedAccount.documentNumber, timer.now().toString())
+        return new CreateAccountResponse(savedAccount.documentNumber, timer.now().toString())
     }
 }
