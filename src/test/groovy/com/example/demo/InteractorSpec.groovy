@@ -2,6 +2,7 @@ package com.example.demo
 
 import com.example.demo.business.Interactor
 import com.example.demo.business.entities.Account
+import com.example.demo.business.exceptions.InvalidDocumentNumberException
 import com.example.demo.business.ports.AccountRepository
 import com.example.demo.business.exceptions.DuplicatedAccountNumberException
 import com.example.demo.business.ports.Timer
@@ -54,6 +55,22 @@ class InteractorSpec extends Specification {
         final DuplicatedAccountNumberException ex = thrown(DuplicatedAccountNumberException)
         ex.documentNumber == documentNumber
         ex.message == "Cannot create account. Already exists an account with document number = ${documentNumber}"
+    }
+
+    def "Should not allow create account with empty document number"() {
+        when:
+        interactor.createAccount(new CreateAccountRequest(documentNumber))
+
+        then:
+        final InvalidDocumentNumberException ex = thrown(InvalidDocumentNumberException)
+        ex.documentNumber == documentNumber
+        ex.message == message
+
+        where:
+        documentNumber | message
+        null           | "Invalid document number: null"
+        ""             | "Invalid document number: ''"
+        "            " | "Invalid document number: '            '"
     }
 
 }

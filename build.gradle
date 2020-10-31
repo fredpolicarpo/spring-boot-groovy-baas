@@ -31,7 +31,6 @@ dependencies {
     implementation 'org.hibernate:hibernate-java8'
     implementation 'org.codehaus.groovy:groovy'
 
-
     implementation "org.liquibase:liquibase-core:${liquibaseCoreVersion}"
     implementation "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
     implementation "org.liquibase:liquibase-gradle-plugin:1.2.4"
