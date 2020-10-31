@@ -5,10 +5,8 @@ import com.example.demo.business.entities.OperationType
 import com.example.demo.business.entities.Transaction
 import com.example.demo.business.ports.Timer
 import groovy.transform.Canonical
-import org.springframework.stereotype.Service
 
 @Canonical
-@Service
 class BankTransaction {
     final Timer timer
 
