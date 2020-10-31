@@ -1,5 +1,6 @@
-# spring-boot-seed
-Seed project for SpringBoot with Groovy, Liquibase/Postgres
+# Simple Bank as a Service
+### A simple BaaS 
+This project intent to be used as a seed project for SpringBoot with Groovy, Liquibase/Postgres
 
 # Install Java 11
 //TODO
