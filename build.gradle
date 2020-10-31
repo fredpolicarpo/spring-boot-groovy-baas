@@ -1,9 +1,9 @@
 plugins {
-	id 'application'
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'org.liquibase.gradle' version '2.0.3'
-	id 'groovy'
+    id 'application'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.liquibase.gradle' version '2.0.3'
+    id 'groovy'
 }
 
 mainClassName = 'com.example.demo.DemoApplication'
@@ -13,7 +13,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 def liquibaseCoreVersion = '4.1.1'
@@ -21,52 +21,53 @@ def postgreJdbcVersion = '42.2.18'
 def liquibaseGroovyDslVersion = "3.0.0"
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 
-	implementation 'org.springframework.data:spring-data-jpa'
+    implementation 'org.springframework.data:spring-data-jpa'
 
-	implementation 'org.hibernate:hibernate-core'
-	implementation 'org.hibernate:hibernate-java8'
-	implementation 'org.codehaus.groovy:groovy'
+    implementation 'org.hibernate:hibernate-core'
+    implementation 'org.hibernate:hibernate-java8'
+    implementation 'org.codehaus.groovy:groovy'
 
 
-	implementation "org.liquibase:liquibase-core:${liquibaseCoreVersion}"
-	implementation "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
-	implementation "org.liquibase:liquibase-gradle-plugin:1.2.4"
+    implementation "org.liquibase:liquibase-core:${liquibaseCoreVersion}"
+    implementation "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
+    implementation "org.liquibase:liquibase-gradle-plugin:1.2.4"
 
-	runtime "org.postgresql:postgresql:${postgreJdbcVersion}"
+    runtime "org.postgresql:postgresql:${postgreJdbcVersion}"
 
-	liquibaseRuntime "org.liquibase:liquibase-core:${liquibaseCoreVersion}"
-	liquibaseRuntime "org.postgresql:postgresql:${postgreJdbcVersion}"
-	liquibaseRuntime "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
+    liquibaseRuntime "org.liquibase:liquibase-core:${liquibaseCoreVersion}"
+    liquibaseRuntime "org.postgresql:postgresql:${postgreJdbcVersion}"
+    liquibaseRuntime "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
 
-	testImplementation('org.springframework.security:spring-security-test')
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation platform("org.spockframework:spock-bom:2.0-M3-groovy-2.5")
-	testImplementation "org.spockframework:spock-core"
-	testImplementation "org.spockframework:spock-junit4"
+    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation platform("org.spockframework:spock-bom:2.0-M3-groovy-2.5")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-spring"
+    testImplementation "org.spockframework:spock-junit4"
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 liquibase {
-	activities {
-		main {
-			//TODO read values from application.properties
-			changeLogFile 'src/main/resources/db/changelog/changelog-master.groovy'
-			url 'jdbc:postgresql://localhost:5432/demo'
-			driver 'org.postgresql.Driver'
-			username 'root'
-			password 'passwdemo'
-		}
-	}
+    activities {
+        main {
+            //TODO read values from application.properties
+            changeLogFile 'src/main/resources/db/changelog/changelog-master.groovy'
+            url 'jdbc:postgresql://localhost:5432/demo'
+            driver 'org.postgresql.Driver'
+            username 'root'
+            password 'passwdemo'
+        }
+    }
 
-	runList = 'main'
+    runList = 'main'
 }
 

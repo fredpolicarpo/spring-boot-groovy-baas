@@ -1,10 +1,10 @@
 package com.example.demo.business.entities
 
 enum OperationType {
-    COMPRA_A_VISTA(1),
-    COMPRA_PARCELADA(2),
-    SAQUE(3),
-    PAGAMENTO(4),
+    CASH_PAYMENT(1),
+    INSTALLMENT_PAYMENT(2),
+    WITHDRAW(3),
+    DEPOSIT(4),
 
     int code
 
