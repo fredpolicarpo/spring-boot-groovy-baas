@@ -14,6 +14,8 @@ This command will run the database PostgreSQL[LINK] and the WireMock(for tests [
 
 # Run tests
 //TODO
+## Verify code coverage 
+Open the [JaCoCo](https://www.jacoco.org/jacoco/) report at `build/reports/jacoco/test/html/index.html`
 
 # Run Application
 //TODO
