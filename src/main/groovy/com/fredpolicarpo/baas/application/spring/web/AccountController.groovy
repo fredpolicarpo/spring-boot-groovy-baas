@@ -1,13 +1,12 @@
 package com.fredpolicarpo.baas.application.spring.web
 
-
+import com.fredpolicarpo.baas.application.spring.adapters.AccountPresenterServletResponse
 import com.fredpolicarpo.baas.business.Interactor
-import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
-import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
-import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 import com.fredpolicarpo.baas.ui.GetAccountResponse
+import com.fredpolicarpo.baas.ui.api.CreateAccountPresenter
+import com.fredpolicarpo.baas.ui.api.GetAccountPresenter
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -28,34 +27,24 @@ class AccountController {
     }
 
     @PostMapping
-    CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
+    void getAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
+       final CreateAccountPresenter presenter = new AccountPresenterServletResponse(response)
+
         try {
-            final CreateAccountResponse createAccountResponse = interactor.createAccount(request)
-            response.setStatus(HttpServletResponse.SC_CREATED)
-            return createAccountResponse
-        } catch (final DuplicatedAccountNumberException duplicatedAccountEx) {
-            response.setStatus(HttpServletResponse.SC_CONFLICT)
-            return new CreateAccountResponse(error: duplicatedAccountEx.message)
-        } catch (final InvalidDocumentNumberException invalidDocumentNumberEx) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST)
-            return new CreateAccountResponse(error: invalidDocumentNumberEx.message)
+            presenter.showAccount(interactor.createAccount(request))
         } catch (final Exception ex) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            return new CreateAccountResponse(error: ex.message)
+            presenter.showError(ex)
         }
     }
 
     @GetMapping("/{accountId}")
-    GetAccountResponse createAccount(@PathVariable Long accountId, HttpServletResponse response) {
+    void getAccount(@PathVariable Long accountId, HttpServletResponse response) {
+        final GetAccountPresenter presenter = new AccountPresenterServletResponse(response)
+
         try {
-            final GetAccountResponse getAccountResponse = interactor.getAccount(accountId)
-            return getAccountResponse
-        } catch (final AccountNotFoundException accountNotFoundEx) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND)
-            return new GetAccountResponse(error: accountNotFoundEx.message)
+            presenter.showAccount(interactor.getAccount(accountId))
         } catch (final Exception ex) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-            return new GetAccountResponse(error: ex.message)
+            presenter.showError(ex)
         }
     }
 }
