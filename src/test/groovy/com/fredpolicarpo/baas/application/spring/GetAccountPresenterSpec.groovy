@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 import javax.servlet.http.HttpServletResponse
 
-class GetAccountPresenterServletResponseSpec  extends Specification  {
+class GetAccountPresenterSpec extends Specification  {
     final static GetAccountPresenter getAccountPresenter = new GetAccountPresenter()
 
     void "Should return status code OK when an account is found"() {

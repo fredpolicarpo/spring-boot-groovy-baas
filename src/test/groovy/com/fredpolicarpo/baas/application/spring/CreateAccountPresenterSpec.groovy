@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 import javax.servlet.http.HttpServletResponse
 
-class CreateAccountPresenterServletResponseSpec extends Specification  {
+class CreateAccountPresenterSpec extends Specification  {
     final static CreateAccountPresenter createAccountPresenter = new CreateAccountPresenter()
 
     void "Should return status code CREATED when an account created"() {
