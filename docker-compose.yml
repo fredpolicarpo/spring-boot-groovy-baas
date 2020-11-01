@@ -14,4 +14,4 @@ services:
     volumes:
       - ./docker-compose/wiremock/mappings:/home/wiremock/mappings
     ports:
-      - "8181:8080"
+      - "8181:8081"

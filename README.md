@@ -5,6 +5,9 @@ This project intent to be used as a seed project for SpringBoot with Groovy, Liq
 # Install Java 11
 //TODO
 
+# Run Local with Gradlew
+
+
 # Run Docker
 This command will run the database PostgreSQL[LINK] and the WireMock(for tests [LINK])
 `docker-compose up -d`
