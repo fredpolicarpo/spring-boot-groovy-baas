@@ -4,14 +4,13 @@ package com.fredpolicarpo.baas.application.spring.adapters
 import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
 import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
-import com.fredpolicarpo.baas.ui.api.CreateAccountPresenter
 import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
 import groovy.transform.Canonical
 
 import javax.servlet.http.HttpServletResponse
 
 @Canonical
-class CreateAccountPresenter implements com.fredpolicarpo.baas.ui.api.CreateAccountPresenter {
+class CreateAccountPresenter implements com.fredpolicarpo.baas.ui.api.ports.CreateAccountPresenter {
 
     @Override
     CreateAccountResponseApi buildApiResponse(CreateAccountResponse response) {

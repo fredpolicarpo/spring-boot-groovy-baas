@@ -5,9 +5,9 @@ import com.fredpolicarpo.baas.business.Interactor
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 import com.fredpolicarpo.baas.ui.GetAccountResponse
-import com.fredpolicarpo.baas.ui.api.CreateAccountPresenter
+import com.fredpolicarpo.baas.ui.api.ports.CreateAccountPresenter
 import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
-import com.fredpolicarpo.baas.ui.api.GetAccountPresenter
+import com.fredpolicarpo.baas.ui.api.ports.GetAccountPresenter
 import com.fredpolicarpo.baas.ui.api.GetAccountResponseApi
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

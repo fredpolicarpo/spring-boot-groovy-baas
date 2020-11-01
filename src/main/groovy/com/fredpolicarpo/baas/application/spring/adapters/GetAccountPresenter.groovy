@@ -3,14 +3,13 @@ package com.fredpolicarpo.baas.application.spring.adapters
 
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
 import com.fredpolicarpo.baas.ui.GetAccountResponse
-import com.fredpolicarpo.baas.ui.api.GetAccountPresenter
 import com.fredpolicarpo.baas.ui.api.GetAccountResponseApi
 import groovy.transform.Canonical
 
 import javax.servlet.http.HttpServletResponse
 
 @Canonical
-class GetAccountPresenter implements com.fredpolicarpo.baas.ui.api.GetAccountPresenter {
+class GetAccountPresenter implements com.fredpolicarpo.baas.ui.api.ports.GetAccountPresenter {
 
     @Override
     GetAccountResponseApi buildApiResponse(GetAccountResponse response) {
