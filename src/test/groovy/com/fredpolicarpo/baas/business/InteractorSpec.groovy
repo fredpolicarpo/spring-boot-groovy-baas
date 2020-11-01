@@ -1,6 +1,9 @@
 package com.fredpolicarpo.baas.business
 
+import com.fredpolicarpo.baas.business.entities.Transaction
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
+import com.fredpolicarpo.baas.business.ports.TransactionRepository
+import com.fredpolicarpo.baas.business.services.BankTransaction
 import com.fredpolicarpo.baas.mocks.AccountRepositoryMock
 import com.fredpolicarpo.baas.mocks.TimerMock
 import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
@@ -8,8 +11,11 @@ import com.fredpolicarpo.baas.business.ports.AccountRepository
 import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
 import com.fredpolicarpo.baas.business.ports.Timer
 import com.fredpolicarpo.baas.business.entities.Account
+import com.fredpolicarpo.baas.mocks.TransactionRepositoryMock
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
+import com.fredpolicarpo.baas.ui.CreateTransactionRequest
+import com.fredpolicarpo.baas.ui.CreateTransactionResponse
 import com.fredpolicarpo.baas.ui.GetAccountResponse
 import spock.lang.Specification
 
@@ -20,16 +26,19 @@ class InteractorSpec extends Specification {
     final static Instant fixedCurrentInstant = Instant.parse(currentInstantStr)
 
     AccountRepository mockAccountRepository
+    TransactionRepository mockTransactionRepository
     Interactor interactor
 
     def setup() {
         final Timer mockTimer = new TimerMock(fixedCurrentInstant)
         mockAccountRepository = new AccountRepositoryMock()
-        interactor = new Interactor(mockAccountRepository, mockTimer)
+        mockTransactionRepository = new TransactionRepositoryMock()
+        interactor = new Interactor(mockAccountRepository,  mockTransactionRepository, new BankTransaction(mockTimer), mockTimer)
     }
 
     def cleanup() {
         ((AccountRepositoryMock) mockAccountRepository).clean()
+        ((TransactionRepositoryMock) mockTransactionRepository).clean()
     }
 
     def "Should create a new Account"() {
@@ -96,7 +105,7 @@ class InteractorSpec extends Specification {
         persistedAccount.documentNumber == response.documentNumber
     }
 
-    def "Should throw when try get details of an not existent Account"() {
+    def "Should throw AccountNotFoundException when try get details of a not existent Account"() {
         given:
         final Long id = 1
 
@@ -107,6 +116,40 @@ class InteractorSpec extends Specification {
         final AccountNotFoundException ex = thrown(AccountNotFoundException)
         ex.id == id
         ex.message == "Any Account found with id = ${id}"
+    }
+
+    def "Should throw AccountNotFoundException when try create a transaction for a not existent Account"() {
+        given:
+        final String id = "1"
+        final CreateTransactionRequest request = new CreateTransactionRequest(accountId: "1", amount: "123.25", operationTypeId: "4")
+
+        when: "Try to get an account from an empty repository"
+        interactor.createTransaction(request)
+
+        then:
+        final AccountNotFoundException ex = thrown(AccountNotFoundException)
+        ex.id == Long.valueOf(id)
+        ex.message == "Any Account found with id = ${id}"
+    }
+
+    def "Should create transaction for an existent Account"() {
+        given: "A persisted account"
+        final String documentNumber = "11122233344456"
+        final Account persistedAccount = mockAccountRepository.save(new Account(documentNumber: documentNumber))
+
+        and: "A request to create a transaction"
+        final CreateTransactionRequest request = new CreateTransactionRequest(accountId: String.valueOf(persistedAccount.id), amount: "123.25", operationTypeId: "4")
+
+        when: "Persisted account has an id"
+        final CreateTransactionResponse response = interactor.createTransaction(request)
+
+        then:
+        String.valueOf(1L) == response.transactionId // As ID is auto-increment for mock
+        currentInstantStr == response.eventDate
+        final Transaction transaction = mockTransactionRepository.findById(1L).get()
+        new BigDecimal("123.25") == transaction.amount
+        fixedCurrentInstant == transaction.eventDate
+        persistedAccount == transaction.account
     }
 
 }
