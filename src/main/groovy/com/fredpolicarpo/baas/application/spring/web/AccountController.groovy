@@ -1,12 +1,14 @@
 package com.fredpolicarpo.baas.application.spring.web
 
-import com.fredpolicarpo.baas.application.spring.adapters.AccountPresenterServletResponse
+
 import com.fredpolicarpo.baas.business.Interactor
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 import com.fredpolicarpo.baas.ui.GetAccountResponse
 import com.fredpolicarpo.baas.ui.api.CreateAccountPresenter
+import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
 import com.fredpolicarpo.baas.ui.api.GetAccountPresenter
+import com.fredpolicarpo.baas.ui.api.GetAccountResponseApi
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,24 +29,35 @@ class AccountController {
     }
 
     @PostMapping
-    void getAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
-       final CreateAccountPresenter presenter = new AccountPresenterServletResponse(response)
+    CreateAccountResponse getAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
+        final CreateAccountResponseApi createAccountResponseApi = buildCreateAccountResponse({ interactor.createAccount(request) })
+        response.setStatus(createAccountResponseApi.httpStatus)
+        return createAccountResponseApi.response
+    }
 
+    private static CreateAccountResponseApi buildCreateAccountResponse(Closure<CreateAccountResponse> action) {
+        final CreateAccountPresenter presenter = new com.fredpolicarpo.baas.application.spring.adapters.CreateAccountPresenter()
         try {
-            presenter.showAccount(interactor.createAccount(request))
+            return presenter.buildApiResponse(action())
         } catch (final Exception ex) {
-            presenter.showError(ex)
+            return presenter.buildApiResponse(ex)
         }
     }
 
     @GetMapping("/{accountId}")
-    void getAccount(@PathVariable Long accountId, HttpServletResponse response) {
-        final GetAccountPresenter presenter = new AccountPresenterServletResponse(response)
+    GetAccountResponse getAccount(@PathVariable Long accountId, HttpServletResponse response) {
+        final GetAccountResponseApi getAccountResponseApi = buildGetAccountResponse({ interactor.getAccount(accountId) })
+        response.setStatus(getAccountResponseApi.httpStatus)
+        return getAccountResponseApi.response
+    }
+
+    private static GetAccountResponseApi buildGetAccountResponse(Closure<GetAccountResponse> action) {
+        final GetAccountPresenter presenter = new com.fredpolicarpo.baas.application.spring.adapters.GetAccountPresenter()
 
         try {
-            presenter.showAccount(interactor.getAccount(accountId))
+            return presenter.buildApiResponse(action())
         } catch (final Exception ex) {
-            presenter.showError(ex)
+            return presenter.buildApiResponse(ex)
         }
     }
 }

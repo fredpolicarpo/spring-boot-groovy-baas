@@ -3,7 +3,7 @@ package com.fredpolicarpo.baas.ui.api
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 
 interface CreateAccountPresenter {
-    void showAccount(final CreateAccountResponse response)
+    CreateAccountResponseApi buildApiResponse(final CreateAccountResponse response)
 
-    void showError(final Exception exception)
+    CreateAccountResponseApi buildApiResponse(final Exception exception)
 }
