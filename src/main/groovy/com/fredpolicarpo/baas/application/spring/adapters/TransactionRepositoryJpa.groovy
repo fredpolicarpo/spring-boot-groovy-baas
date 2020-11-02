@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service
 class TransactionRepositoryJpa implements TransactionRepository {
     final ITransactionRepositoryJpa transactionRepositoryJpa
 
+    TransactionRepositoryJpa(ITransactionRepositoryJpa transactionRepositoryJpa) {
+        this.transactionRepositoryJpa = transactionRepositoryJpa
+    }
+
     @Override
     Optional<Transaction> findById(Long id) {
         return transactionRepositoryJpa.findById(id)

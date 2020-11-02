@@ -1,5 +1,6 @@
 package com.fredpolicarpo.baas.application.spring.repository
 
+import groovy.transform.Canonical
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 
@@ -13,6 +14,7 @@ import javax.persistence.Version
 import java.time.Instant
 
 @Entity
+@Canonical
 @Table(name = "accounts")
 class AccountJpa implements Serializable {
 

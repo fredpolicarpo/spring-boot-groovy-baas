@@ -24,7 +24,7 @@ class AccountControllerSpec extends Specification {
     @Autowired
     IAccountRepositoryJpa accountRepositoryJpa
 
-    def setup() {
+    def cleanup() {
         accountRepositoryJpa.deleteAllInBatch()
     }
 
