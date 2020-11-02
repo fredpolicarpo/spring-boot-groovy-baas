@@ -29,7 +29,7 @@ class AccountController {
     }
 
     @PostMapping
-    CreateAccountResponse getAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
+    CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request, HttpServletResponse response) {
         final CreateAccountResponseApi createAccountResponseApi = buildCreateAccountResponse({ interactor.createAccount(request) })
         response.setStatus(createAccountResponseApi.httpStatus)
         return createAccountResponseApi.response

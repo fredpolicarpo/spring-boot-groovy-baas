@@ -42,7 +42,6 @@ dependencies {
     liquibaseRuntime "org.postgresql:postgresql:${postgreJdbcVersion}"
     liquibaseRuntime "org.liquibase:liquibase-groovy-dsl:${liquibaseGroovyDslVersion}"
 
-    testImplementation('org.springframework.security:spring-security-test')
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
@@ -50,6 +49,7 @@ dependencies {
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
     testImplementation "org.spockframework:spock-junit4"
+    testImplementation 'com.h2database:h2'
 }
 
 test {
@@ -59,19 +59,4 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
-}
-
-liquibase {
-    activities {
-        main {
-            //TODO read values from application.properties
-            changeLogFile 'src/main/resources/db/changelog/changelog-master.groovy'
-            url 'jdbc:postgresql://localhost:5432/demo'
-            driver 'org.postgresql.Driver'
-            username 'root'
-            password 'passwdemo'
-        }
-    }
-
-    runList = 'main'
 }

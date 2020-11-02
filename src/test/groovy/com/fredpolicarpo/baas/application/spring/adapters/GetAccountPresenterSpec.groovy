@@ -1,4 +1,4 @@
-package com.fredpolicarpo.baas.application.spring
+package com.fredpolicarpo.baas.application.spring.adapters
 
 import com.fredpolicarpo.baas.application.spring.adapters.GetAccountPresenter
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException

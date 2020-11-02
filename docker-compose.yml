@@ -7,11 +7,3 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=passwdemo
-
-  wiremock.local:
-    image: rodolpheche/wiremock
-    container_name: wiremock.local
-    volumes:
-      - ./docker-compose/wiremock/mappings:/home/wiremock/mappings
-    ports:
-      - "8181:8081"

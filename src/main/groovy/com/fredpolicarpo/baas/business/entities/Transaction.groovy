@@ -7,6 +7,6 @@ class Transaction {
     Long id
     Account account
     OperationType operationType
-    Instant eventDate
     BigDecimal amount
+    Instant eventDate
 }
