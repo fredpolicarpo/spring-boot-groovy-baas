@@ -3,7 +3,7 @@
 This project runs a Web API with Banking operations
 
 # Setting Up
-This section will explain how to configure an environment to run the `BaaS` API
+This section will explain how to configure the environment to run the `BaaS` API
 
 ## Install Java 11
 It is recommend to use [SKDMAN!](https://sdkman.io) to manage the JDK versions in your environment.
@@ -31,7 +31,7 @@ Open the [JaCoCo](https://www.jacoco.org/jacoco/) report at `build/reports/jacoc
 # Run Local with Gradlew
 This project requires an instance of the database [PostgreSQL](https://www.postgresql.org/). 
 
-The connection data is located on the file [`application.properties`](https://github.com/fredpolicarpo/spring-boot-seed/blob/main/src/main/resources/application.properties)
+The connection data is located in the file [`application.properties`](https://github.com/fredpolicarpo/spring-boot-seed/blob/main/src/main/resources/application.properties)
 
 If you will use some pre-existent database, just update the [`application.properties`](https://github.com/fredpolicarpo/spring-boot-seed/blob/main/src/main/resources/application.properties) 
 file with the connection data.
@@ -44,7 +44,7 @@ This command will up an instance of PostgreSQL with the properly configuration:
 `docker-compose up -d`
 
 ### Create the database
-You need to connect on the postgres(`jdbc:postgresql://localhost:5432`), and create the `baas` database.
+You need to connect on the postgres `default database` (`jdbc:postgresql://localhost:5432/postgres`), and create the `baas` database.
 Execute the following command:
 
 `create database baas;`
