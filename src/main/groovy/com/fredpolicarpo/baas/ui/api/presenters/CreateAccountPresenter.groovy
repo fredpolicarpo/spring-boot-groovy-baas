@@ -1,4 +1,4 @@
-package com.fredpolicarpo.baas.application.spring.adapters
+package com.fredpolicarpo.baas.ui.api.presenters
 
 
 import com.fredpolicarpo.baas.business.exceptions.DuplicatedAccountNumberException
@@ -6,19 +6,28 @@ import com.fredpolicarpo.baas.business.exceptions.InvalidDocumentNumberException
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
 import groovy.transform.Canonical
+import groovy.util.logging.Slf4j
 
 import javax.servlet.http.HttpServletResponse
 
+@Slf4j
 @Canonical
-class CreateAccountPresenter implements com.fredpolicarpo.baas.ui.api.ports.CreateAccountPresenter {
+final class CreateAccountPresenter  {
 
-    @Override
-    CreateAccountResponseApi buildApiResponse(CreateAccountResponse response) {
+    static CreateAccountResponseApi buildCreateAccountResponse(Closure<CreateAccountResponse> createAccount) {
+        try {
+            return buildApiResponse(createAccount())
+        } catch (final Exception ex) {
+            log.error("Fail to create account", ex)
+            return buildApiResponse(ex)
+        }
+    }
+
+    private static CreateAccountResponseApi buildApiResponse(CreateAccountResponse response) {
         return new CreateAccountResponseApi(response, HttpServletResponse.SC_CREATED)
     }
 
-    @Override
-    CreateAccountResponseApi buildApiResponse(Exception exception) {
+    private static CreateAccountResponseApi buildApiResponse(Exception exception) {
         final int status
         final CreateAccountResponse response = new CreateAccountResponse(error: exception.message)
 

@@ -55,4 +55,35 @@ Now, you can run the application. (This command will execute the database migrat
 `./gradlew run`
 
 # Project Structure, Architecture and  Engineering Principles
-//TODO
+The architecture of this project is inspired on two references:
+
+ - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+ - [Ports and Adapters](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+ 
+## Overview
+
+![architecture overview image](https://github.com/fredpolicarpo/spring-boot-seed/raw/master/Architecture.png)
+ 
+## Layers
+A brief explanation about the main layers of this architecture.
+
+### Business
+The business layers must be agnostic of any framework and must contain all application and business rules.
+
+This way the code of this layer should be reused on any version of the BaaS, regardless the details like: Framework, User Interfaces or Databases.
+
+### UI
+The UI Layer define data structure to move data in and out the business layer, with the `*Request` and `*Response` POJO classes.
+
+The root of `ui` layer should have structures agnostic of the UI type(we api, CLI, mobile, etc..)
+
+This layer must be framework agnostic as well.
+
+#### API
+
+The API layer contains details of UI regarding the Web API presentation mode, like the http status code.
+
+This layer define data structures that extends the base ones (on the root `ui` layer), with data regarding web api, 
+and also have presenters with the logic for showing the responses on a Web API.
+
+### Adapters

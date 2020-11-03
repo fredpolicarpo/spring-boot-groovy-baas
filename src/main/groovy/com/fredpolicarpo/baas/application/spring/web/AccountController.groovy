@@ -5,9 +5,7 @@ import com.fredpolicarpo.baas.business.Interactor
 import com.fredpolicarpo.baas.ui.CreateAccountRequest
 import com.fredpolicarpo.baas.ui.CreateAccountResponse
 import com.fredpolicarpo.baas.ui.GetAccountResponse
-import com.fredpolicarpo.baas.ui.api.ports.CreateAccountPresenter
 import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
-import com.fredpolicarpo.baas.ui.api.ports.GetAccountPresenter
 import com.fredpolicarpo.baas.ui.api.GetAccountResponseApi
 import groovy.util.logging.Slf4j
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import javax.servlet.http.HttpServletResponse
+
+import static com.fredpolicarpo.baas.ui.api.presenters.CreateAccountPresenter.buildCreateAccountResponse
+import static com.fredpolicarpo.baas.ui.api.presenters.GetAccountPresenter.buildGetAccountResponse
+
 
 @Slf4j
 @RestController
@@ -37,31 +39,10 @@ class AccountController {
         return createAccountResponseApi.response
     }
 
-    private static CreateAccountResponseApi buildCreateAccountResponse(Closure<CreateAccountResponse> action) {
-        final CreateAccountPresenter presenter = new com.fredpolicarpo.baas.application.spring.adapters.CreateAccountPresenter()
-        try {
-            return presenter.buildApiResponse(action())
-        } catch (final Exception ex) {
-            log.error("Fail to create account", ex)
-            return presenter.buildApiResponse(ex)
-        }
-    }
-
     @GetMapping("/{accountId}")
     GetAccountResponse getAccount(@PathVariable Long accountId, HttpServletResponse response) {
         final GetAccountResponseApi getAccountResponseApi = buildGetAccountResponse({ interactor.getAccount(accountId) })
         response.setStatus(getAccountResponseApi.httpStatus)
         return getAccountResponseApi.response
-    }
-
-    private static GetAccountResponseApi buildGetAccountResponse(Closure<GetAccountResponse> action) {
-        final GetAccountPresenter presenter = new com.fredpolicarpo.baas.application.spring.adapters.GetAccountPresenter()
-
-        try {
-            return presenter.buildApiResponse(action())
-        } catch (final Exception ex) {
-            log.error("Fail to get account", ex)
-            return presenter.buildApiResponse(ex)
-        }
     }
 }

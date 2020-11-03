@@ -1,6 +1,5 @@
-package com.fredpolicarpo.baas.application.spring.adapters
+package com.fredpolicarpo.baas.ui.api.presenters
 
-import com.fredpolicarpo.baas.application.spring.adapters.CreateTransactionPresenter
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
 import com.fredpolicarpo.baas.ui.CreateTransactionResponse
 import spock.lang.Specification
