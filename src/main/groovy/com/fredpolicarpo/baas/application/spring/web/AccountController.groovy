@@ -9,6 +9,7 @@ import com.fredpolicarpo.baas.ui.api.ports.CreateAccountPresenter
 import com.fredpolicarpo.baas.ui.api.CreateAccountResponseApi
 import com.fredpolicarpo.baas.ui.api.ports.GetAccountPresenter
 import com.fredpolicarpo.baas.ui.api.GetAccountResponseApi
+import groovy.util.logging.Slf4j
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.servlet.http.HttpServletResponse
 
+@Slf4j
 @RestController
 @RequestMapping("/v1/accounts")
 class AccountController {
@@ -40,6 +42,7 @@ class AccountController {
         try {
             return presenter.buildApiResponse(action())
         } catch (final Exception ex) {
+            log.error("Fail to create account", ex)
             return presenter.buildApiResponse(ex)
         }
     }
@@ -57,6 +60,7 @@ class AccountController {
         try {
             return presenter.buildApiResponse(action())
         } catch (final Exception ex) {
+            log.error("Fail to get account", ex)
             return presenter.buildApiResponse(ex)
         }
     }

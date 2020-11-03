@@ -5,7 +5,7 @@ import groovy.transform.Canonical
 
 @Canonical
 class CreateTransactionRequest {
-    @JsonProperty("document_number")
+    @JsonProperty("account_id")
     String accountId
 
     @JsonProperty("operation_type_id")
