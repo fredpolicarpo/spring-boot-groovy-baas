@@ -54,7 +54,7 @@ Now, you can run the application. (This command will execute the database migrat
 
 `./gradlew run`
 
-# Project Structure, Architecture and  Engineering Principles
+# Project Structure and Architecture
 The architecture of this project is inspired on two references:
 
  - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
