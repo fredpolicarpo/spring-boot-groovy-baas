@@ -31,9 +31,9 @@ Open the [JaCoCo](https://www.jacoco.org/jacoco/) report at `build/reports/jacoc
 # Run Local with Gradlew
 This project requires an instance of the database [PostgreSQL](https://www.postgresql.org/). 
 
-The connection data is located in the file [`application.properties`](https://github.com/fredpolicarpo/spring-boot-seed/blob/main/src/main/resources/application.properties)
+The connection data is located in the file [`application.properties`](https://github.com/fredpolicarpo/spring-boot-groovy-baas/blob/main/src/main/resources/application.properties)
 
-If you will use some pre-existent database, just update the [`application.properties`](https://github.com/fredpolicarpo/spring-boot-seed/blob/main/src/main/resources/application.properties) 
+If you will use some pre-existent database, just update the [`application.properties`](https://github.com/fredpolicarpo/spring-boot-groovy-baas/blob/main/src/main/resources/application.properties) 
 file with the connection data.
 
 If you dont have an instance of PostgreSQL, you can run it locally using [Docker](https://www.docker.com/).
@@ -62,7 +62,7 @@ The architecture of this project is inspired on two references:
  
 ## Overview
 
-![architecture overview image](https://github.com/fredpolicarpo/spring-boot-seed/raw/master/Architecture.png)
+![architecture overview image](https://github.com/fredpolicarpo/spring-boot-groovy-baas/blob/main/Architecture.png)
  
 ## Layers
 A brief explanation about the main layers of this architecture.
@@ -85,5 +85,3 @@ The API layer contains details of UI regarding the Web API presentation mode, li
 
 This layer define data structures that extends the base ones (on the root `ui` layer), with data regarding web api, 
 and also have presenters with the logic for showing the responses on a Web API.
-
-### Adapters
