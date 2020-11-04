@@ -34,7 +34,7 @@ class Interactor {
             throw new DuplicatedAccountNumberException(createAccountRequest.documentNumber)
         }
 
-        final Account account = new Account(documentNumber: createAccountRequest.documentNumber)
+        final Account account = new Account(documentNumber: createAccountRequest.documentNumber, creditLimit: new BigDecimal(createAccountRequest.creditLimit))
 
         final Account savedAccount = accountRepository.save(account)
 
@@ -48,7 +48,11 @@ class Interactor {
             throw new AccountNotFoundException(id)
         }
 
-        return new GetAccountResponse(documentNumber: optionalAccount.get().documentNumber, accountId: optionalAccount.get().id)
+        return new GetAccountResponse(
+                documentNumber: optionalAccount.get().documentNumber,
+                accountId: optionalAccount.get().id,
+                creditLimit: optionalAccount.get().creditLimit
+        )
     }
 
     CreateTransactionResponse createTransaction(CreateTransactionRequest request) {

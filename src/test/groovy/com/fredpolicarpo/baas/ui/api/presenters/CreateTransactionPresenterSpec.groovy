@@ -1,6 +1,7 @@
 package com.fredpolicarpo.baas.ui.api.presenters
 
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
+import com.fredpolicarpo.baas.business.exceptions.InsuficientLimitException
 import com.fredpolicarpo.baas.ui.CreateTransactionResponse
 import spock.lang.Specification
 
@@ -45,6 +46,14 @@ class CreateTransactionPresenterSpec extends Specification  {
     void "Should return status code CONFLICT when a AccountNotFoundException is raised"() {
         given:
         final Exception exception = new AccountNotFoundException()
+
+        expect:
+        HttpServletResponse.SC_CONFLICT == createTransactionPresenter.buildApiResponse(exception).httpStatus
+    }
+
+    void "Should return status code CONFLICT when a InsuficientLimitException is raised"() {
+        given:
+        final Exception exception = new InsuficientLimitException()
 
         expect:
         HttpServletResponse.SC_CONFLICT == createTransactionPresenter.buildApiResponse(exception).httpStatus

@@ -31,7 +31,8 @@ class AccountControllerSpec extends Specification {
     def "Should create a new Account"() {
         given:
         final String documentNumber = "003876321298"
-        final CreateAccountRequest request = new CreateAccountRequest(documentNumber)
+        final String creditLimit = "500.00"
+        final CreateAccountRequest request = new CreateAccountRequest(documentNumber, creditLimit)
 
         when:
         final ResponseEntity<CreateAccountResponse> response = this.restTemplate.postForEntity("http://localhost:${port}/v1/accounts",
@@ -46,6 +47,7 @@ class AccountControllerSpec extends Specification {
         final Optional<AccountJpa> savedAccount = accountRepositoryJpa.findByDocumentNumber(documentNumber)
         savedAccount.isPresent()
         savedAccount.get().documentNumber == documentNumber
+        savedAccount.get().creditLimit.toString() == creditLimit
     }
 
     def "Should return status code CONFLICT when try to create an account with a duplicated document number"() {
@@ -85,7 +87,8 @@ class AccountControllerSpec extends Specification {
     def "Should retrieve a saved Account"() {
         given:
         final String documentNumber = "003876321298"
-        final AccountJpa savedAccount = accountRepositoryJpa.save(new AccountJpa(documentNumber: documentNumber))
+        final BigDecimal creditLimit = new BigDecimal("1000.00")
+        final AccountJpa savedAccount = accountRepositoryJpa.save(new AccountJpa(documentNumber: documentNumber, creditLimit: creditLimit))
         final Long accountId = savedAccount.id
 
         when:
@@ -97,6 +100,7 @@ class AccountControllerSpec extends Specification {
         response.statusCode == HttpStatus.OK
         response.body.documentNumber == documentNumber
         response.body.accountId == String.valueOf(accountId)
+        response.body.creditLimit == creditLimit.toString()
     }
 
     def "Should return NOT_FOUND when try to retrieve a not existent Account"() {

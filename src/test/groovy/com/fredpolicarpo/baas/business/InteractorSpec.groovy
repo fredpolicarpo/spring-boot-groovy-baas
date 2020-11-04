@@ -44,7 +44,8 @@ class InteractorSpec extends Specification {
     def "Should create a new Account"() {
         given:
         final String documentNumber = "11122233344456"
-        final CreateAccountRequest createAccountRequest = new CreateAccountRequest(documentNumber)
+        final String creditLimit = "500.00"
+        final CreateAccountRequest createAccountRequest = new CreateAccountRequest(documentNumber, creditLimit)
 
         expect: "Receive a response with the correct data"
         final CreateAccountResponse response = interactor.createAccount(createAccountRequest)
@@ -57,6 +58,7 @@ class InteractorSpec extends Specification {
         savedAccount.isPresent()
         savedAccount.get().documentNumber == documentNumber
         savedAccount.get().id != null
+        savedAccount.get().creditLimit.toString() == creditLimit
     }
 
     def "Should not allow create account with duplicated document number"() {
@@ -94,7 +96,8 @@ class InteractorSpec extends Specification {
     def "Should retrieve details of an Account"() {
         given: "A persisted account"
         final String documentNumber = "11122233344456"
-        final Account persistedAccount = mockAccountRepository.save(new Account(documentNumber: documentNumber))
+        final BigDecimal creditLimit = new BigDecimal("2000.00")
+        final Account persistedAccount = mockAccountRepository.save(new Account(documentNumber: documentNumber, creditLimit: creditLimit))
 
         expect: "Persisted account has an id"
         persistedAccount.id != null
@@ -103,6 +106,8 @@ class InteractorSpec extends Specification {
         final GetAccountResponse response = interactor.getAccount(persistedAccount.id)
         String.valueOf(persistedAccount.id) == response.accountId
         persistedAccount.documentNumber == response.documentNumber
+        creditLimit.toString() == response.creditLimit
+
     }
 
     def "Should throw AccountNotFoundException when try get details of a not existent Account"() {
@@ -150,6 +155,29 @@ class InteractorSpec extends Specification {
         new BigDecimal("123.25") == transaction.amount
         fixedCurrentInstant == transaction.eventDate
         persistedAccount == transaction.account
+    }
+
+    def "Should execute withdraw transaction for an existent Account"() {
+        given: "A persisted account"
+        final String documentNumber = "11122233344456"
+        final BigDecimal creditLimit = new BigDecimal("1000.00")
+        final Account persistedAccount = mockAccountRepository.save(new Account(documentNumber: documentNumber, creditLimit: creditLimit))
+        final String amountStr = "123.25"
+
+        and: "A request to create a transaction"
+        final CreateTransactionRequest request = new CreateTransactionRequest(accountId: String.valueOf(persistedAccount.id), amount: amountStr, operationTypeId: "3")
+
+        when: "Persisted account has an id"
+        final CreateTransactionResponse response = interactor.createTransaction(request)
+
+        then:
+        String.valueOf(1L) == response.transactionId // As ID is auto-increment for mock
+        currentInstantStr == response.eventDate
+        final Transaction transaction = mockTransactionRepository.findById(1L).get()
+        new BigDecimal("-123.25") == transaction.amount
+        fixedCurrentInstant == transaction.eventDate
+        persistedAccount == transaction.account
+        creditLimit - new BigDecimal(amountStr) == persistedAccount.creditLimit
     }
 
 }

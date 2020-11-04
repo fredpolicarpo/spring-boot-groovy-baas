@@ -13,5 +13,8 @@ class GetAccountResponse {
     @JsonProperty("account_id")
     String accountId
 
+    @JsonProperty("credit_limit")
+    String creditLimit
+
     String error
 }

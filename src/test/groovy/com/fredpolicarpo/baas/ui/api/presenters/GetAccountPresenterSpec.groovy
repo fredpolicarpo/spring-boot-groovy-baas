@@ -19,7 +19,7 @@ class GetAccountPresenterSpec extends Specification  {
 
     void "Should return the account data when an account is found"() {
         given:
-        final GetAccountResponse getAccountResponse = new GetAccountResponse(documentNumber: "any", accountId: 1L)
+        final GetAccountResponse getAccountResponse = new GetAccountResponse(documentNumber: "any", accountId: 1L, creditLimit: "1000.00")
 
         expect:
         getAccountResponse == buildGetAccountResponse({getAccountResponse}).response

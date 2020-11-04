@@ -35,7 +35,7 @@ class TransactionControllerSpec extends Specification {
 
     def "Should create a new Transaction"() {
         given:
-        final AccountJpa account = new AccountJpa(documentNumber: "1233456987")
+        final AccountJpa account = new AccountJpa(documentNumber: "1233456987", creditLimit: new BigDecimal("1000.00"))
         final AccountJpa persistedAccount = accountRepositoryJpa.save(account)
         final String accountId = String.valueOf(persistedAccount.id)
 

@@ -6,4 +6,5 @@ import groovy.transform.Canonical
 class Account {
     Long id
     String documentNumber
+    BigDecimal creditLimit = new BigDecimal("0.00")
 }

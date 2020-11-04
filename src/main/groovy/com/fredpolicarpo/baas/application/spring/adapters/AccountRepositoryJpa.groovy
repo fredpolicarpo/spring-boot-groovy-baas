@@ -20,13 +20,13 @@ class AccountRepositoryJpa implements AccountRepository {
     Optional<Account> findByDocumentNumber(String documentNumber) {
         final Optional<AccountJpa> accountJpa = accountRepositoryJpa.findByDocumentNumber(documentNumber)
 
-        return accountJpa.map({a -> new Account(a.documentNumber)})
+        return accountJpa.map({a -> new Account(a.id, a.documentNumber, a.creditLimit)})
     }
 
     Account save(Account account) {
-        final AccountJpa saved =  accountRepositoryJpa.save(new AccountJpa(documentNumber: account.documentNumber))
+        final AccountJpa saved =  accountRepositoryJpa.save(new AccountJpa(documentNumber: account.documentNumber, creditLimit: account.creditLimit))
 
-        return new Account(documentNumber:  saved.documentNumber, id: saved.id)
+        return new Account(documentNumber:  saved.documentNumber, id: saved.id, creditLimit: saved.creditLimit)
     }
 
     @Override
@@ -38,6 +38,6 @@ class AccountRepositoryJpa implements AccountRepository {
     Optional<Account> findById(Long id) {
         final Optional<AccountJpa> saved =  accountRepositoryJpa.findById(id)
 
-        return saved.map({a -> new Account(documentNumber:  a.documentNumber, id: a.id)})
+        return saved.map({a -> new Account(documentNumber:  a.documentNumber, id: a.id, creditLimit: a.creditLimit)})
     }
 }

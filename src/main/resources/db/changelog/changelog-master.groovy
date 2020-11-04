@@ -49,4 +49,12 @@ databaseChangeLog {
             }
         }
     }
+
+    changeSet(id: 'add-column-credit-limit-to-account-table', author: 'Fred Policarpo') {
+        addColumn(tableName: 'accounts', schemaName: 'public') {
+            column(name: 'credit_limit', type: 'money') {
+                constraints(nullable: false)
+            }
+        }
+    }
 }

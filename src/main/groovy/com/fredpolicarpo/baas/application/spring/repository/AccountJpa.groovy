@@ -22,6 +22,9 @@ class AccountJpa implements Serializable {
     @Column
     String documentNumber
 
+    @Column
+    BigDecimal creditLimit = new BigDecimal("0.00")
+
     // DB Stuff
 
     @Id

@@ -7,4 +7,7 @@ import groovy.transform.Canonical
 class CreateAccountRequest {
     @JsonProperty("document_number")
     String documentNumber
+
+    @JsonProperty("credit_limit")
+    String creditLimit = "0.00"
 }

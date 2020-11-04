@@ -1,6 +1,7 @@
 package com.fredpolicarpo.baas.ui.api.presenters
 
 import com.fredpolicarpo.baas.business.exceptions.AccountNotFoundException
+import com.fredpolicarpo.baas.business.exceptions.InsuficientLimitException
 import com.fredpolicarpo.baas.ui.CreateTransactionResponse
 import com.fredpolicarpo.baas.ui.api.CreateTransactionResponseApi
 import groovy.transform.Canonical
@@ -29,7 +30,7 @@ final class CreateTransactionPresenter  {
         final int status
         final CreateTransactionResponse response = new CreateTransactionResponse(error: exception.message)
 
-        if (exception instanceof AccountNotFoundException) {
+        if (exception instanceof AccountNotFoundException || exception instanceof InsuficientLimitException) {
             status = HttpServletResponse.SC_CONFLICT
         } else {
             status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
